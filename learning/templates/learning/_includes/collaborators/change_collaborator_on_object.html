@@ -1,0 +1,9 @@
+{# object : Course, Activity, Resource #}
+{# object_collaborator : CourseCollaborator, ActivityCollaborator, ResourceCollaborator #}
+{# target_url : URL to be used in the url template tag #}
+
+{% include "learning/_includes/collaborators/modals/change_collaborator_on_object.html" with target_url=target_url%}
+<button class="btn btn-outline-primary" type="button" data-toggle="modal"
+        data-target="#change-collaborator-{{ object_collaborator.collaborator.id }}-on-{{ object.slug }}">
+  <i class="fa fa-edit fa-sm"></i>
+</button>

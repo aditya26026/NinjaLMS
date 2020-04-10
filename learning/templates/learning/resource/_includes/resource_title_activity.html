@@ -1,0 +1,10 @@
+{% load i18n learning countries %}
+{# items of dropdown #}
+<div id="resource-block-for-{{ resource.slug }}" class="listResources">
+   {# The resource name #}
+    <a class="dropdown-item" href="{% url 'learning:resource/detail' slug=resource.slug %}" >
+         {{ resource.name }}
+    </a>
+</div>
+
+

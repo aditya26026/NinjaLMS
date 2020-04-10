@@ -1,0 +1,100 @@
+{% extends "learning/activity/base.html" %}
+{% load i18n learning django_bootstrap_breadcrumbs countries %}
+
+{% block title %}{{ block.super }} −
+  {% blocktrans with name=activity.name %}Activity “{{ name }}”{% endblocktrans %}
+{% endblock %}
+
+{% block breadcrumbs %}
+  {{ block.super }}
+  {% breadcrumb "My activities" "learning:activity/my" %}
+  {% breadcrumb activity.name "learning:activity/detail" activity.slug %}
+{% endblock %}
+
+{% block sidebar %}
+  {% include "learning/activity/_includes/sidebar.html" %}
+{% endblock %}
+
+{% block learning_content %}
+
+  <div class="clearfix">
+
+    {# Name and permalink to the activity #}
+    <h3 class="float-left mb-0">
+      <a href="{% url "learning:activity/detail" slug=activity.slug %}" class="mr-2 btn"
+         data-toggle="tooltip" data-placement="top" title="{% trans "Permalink to the activity." %}"><i class="fa fa-link"></i>
+      </a>
+      {{ activity.name }}
+    </h3>
+    <div class="ml-2 float-right">
+
+      {% get_object_perms activity user as activity_perms %}
+
+      {# Button to change the activity #}
+      {% if "change_activity" in activity_perms %}
+        <a id="btn-change-activity" href="{% url 'learning:activity/update' slug=activity.slug %}" class="btn btn-outline-primary">
+          <i class="fa fa-edit"></i> {% trans "Edit" %}
+        </a>
+      {% endif %}
+
+      {# Button to delete the activity #}
+      {% if "delete_activity" in activity_perms %}
+        <a id="btn-delete-activity" href="{% url 'learning:activity/delete' slug=activity.slug %}" class="btn btn-outline-danger">
+          <i class="fa fa-trash"></i>
+        </a>
+      {% endif %}
+
+    </div>
+  </div>
+
+  {# Activity description line: status badges, author, tags and country #}
+  <hr class="activity_title_separator">
+  {% include "learning/activity/_includes/details/status_line.html" with activity=activity %}
+  <hr>
+  {% include "learning/_includes/object_detail_tags_and_country_line.html" with object=activity %}
+  <hr>
+
+  {# Activity description content #}
+  <div class="p-3 model_description">
+    {{ activity.description | render_markdown | safe }}
+  </div>
+
+  <hr class="resource_title_separator">
+
+  {# Resources linked to the activity #}
+  <div class="clearfix">
+    <h3 class="float-left">{% trans "Resources" %}</h3>
+
+    {# The user can change the activity, thus can add resources. This displays the window to create or attach one #}
+    {% if "change_activity" in activity_perms %}
+      <div class="text-right">
+      <a id="link-activity-attach-resource"  href="{% url "learning:activity/detail/resource/attach" slug=activity.slug %}"
+         class="btn btn-outline-primary">
+        <i class="fa fa-search"></i> {% trans "Attach an existing resource" %}
+      </a>
+      <a id="link-activity-add-resource" href="{% url 'learning:activity/detail/resource/add' slug=activity.slug %}" class="btn btn-outline-success">
+        <i class="fa fa-plus"></i> {% trans "Create a resource" %}
+      </a>
+      </div>
+    {% endif %}
+
+  </div>
+
+  {# Display activity resources #}
+  {% with resources=activity.resources.all %}
+    {% if resources %}
+      <div class="row">
+        {% for resource in resources %}
+          {% include "learning/resource/_includes/block/resource_block.html" with resource=resource unlink=True linked_activity=activity %}
+        {% endfor %}
+      </div>
+    {% else %}
+      <div id="activity-no-resource" class="alert alert-info mt-4" role="alert">
+        {% trans "There is no resource yet." %}
+        {% if "change_activity" in activity_perms %}
+          {% trans "You should consider adding one." context "add a resource" %}
+        {% endif %}
+      </div>
+    {% endif %}
+  {% endwith %}
+{% endblock %}

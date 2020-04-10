@@ -1,0 +1,44 @@
+{% extends "learning/course/_includes/block/course_block_base.html" %}
+{% load i18n learning countries %}
+
+{% block course_block_header %}
+
+  {% get_object_perms course user as course_perms %}
+
+  {# The course name and its status and access badges #}
+  <div class="clearfix">
+    <h5 class="card-title mb-0 float-left">{{ course.name }}</h5>
+    <div class="float-right">
+      {% get_course_collaborator_object course user as course_collaborator %}
+      {% if course_collaborator %}
+        <span class="badge badge-secondary p-1" data-toggle="tooltip" data-placement="top"
+              title="{{ course_collaborator.role|get_role_badge_title }}">
+          {{ course_collaborator.get_role_display }}
+        </span>
+      {% else %}
+        {% if user in course.students.all %}
+          <span class="badge badge-primary p-1" data-toggle="tooltip" data-placement="top"
+                title="{% trans "You registered to this course. You can unregister if registration is enabled by the course owner." %}">
+            {% trans "Registered" %}
+          </span>
+        {% elif course.registration_enabled  and not user == course.author %}
+          <span class="badge badge-primary p-1">{% trans "Registration enabled" %}</span>
+        {% endif %}
+      {% endif %}
+
+      {% if not "view_course" in course_perms %}
+        <span id="restricted-course-{{ course.id }}"
+              class="badge badge-danger p-1"
+              data-toggle="tooltip" data-placement="top"
+              title="{% trans "You do not have the permission to view this course" %}"
+        >{% trans "Restricted access" %}</span>
+      {% endif %}
+
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block course_block_content %}
+{% endblock %}
+

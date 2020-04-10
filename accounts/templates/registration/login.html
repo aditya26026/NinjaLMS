@@ -1,0 +1,24 @@
+{% extends 'accounts/authentication_base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Sign in" %}{% endblock %}
+
+{% block accounts_actionblock %}
+  <div class="card">
+    <div class="card-header">
+      <a href="{% url 'accounts:register' %}"
+         class="float-right btn btn-outline-primary">{% trans "Create a new account" %}</a>
+      <h4 class="card-title mb-1 mt-1">{% trans "Sign in" %}</h4>
+    </div>
+    <div class="card-body">
+      <form method="post">
+        {% csrf_token %}
+        {% include "accounts/_includes/basic_block.html" with field=form.username icon="fa-user" %}
+        {% include "accounts/_includes/password_block.html" with password=form.password %}
+        <a href="{% url 'password_reset' %}">{% trans 'Forgot your password?' %}</a>
+        <hr>
+        <button type="submit" class="btn btn-primary float-right">{% trans "Log in" %}</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

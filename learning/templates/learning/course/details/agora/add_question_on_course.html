@@ -1,0 +1,29 @@
+{% extends "learning/course/details/agora/agora.html" %}
+{% load i18n django_bootstrap_breadcrumbs %}
+
+{% block title %}{{ block.super }} − {% trans "Post a question" %}{% endblock %}
+
+{% block breadcrumbs %}
+  {{ block.super }}
+  {% breadcrumb "Ask Question" "learning:course/detail/question/add" course.slug %}
+{% endblock %}
+
+{% block agora %}
+
+  <h2>
+    {% blocktrans trimmed with course=course %}
+      Ask Question on Course “{{ course }}”
+    {% endblocktrans %}
+  </h2>
+
+  <div class="agora_form_body">
+    <form method="post">
+      {% csrf_token %}
+      {{ form }}
+      <button type="submit" class="btn btn-primary float-right agora_btn" id="btn-submit">
+        {% trans "Ask Question" %}
+      </button>
+    </form>
+  </div>
+
+{% endblock %}

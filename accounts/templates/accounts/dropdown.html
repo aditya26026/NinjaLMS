@@ -1,0 +1,96 @@
+{% load i18n static %}
+
+<!-- Notifications -->
+{% if user.is_authenticated %}
+  <script defer src="{% static 'accounts/js/notification.js' %}"></script>
+  <li class="nav-item dropdown">
+    <a class="nav-link" href="#" id="notifications_dropdown_link" data-toggle="dropdown"
+       aria-haspopup="true" aria-expanded="false">
+      <i class="fa fa-bell"></i>
+      {% if user.unread_notifications.count > 0 %}
+        <span class="badge badge-danger align-middle" id="notification_counter">
+        {{ user.unread_notifications.count }}
+      </span>
+      {% endif %}
+    </a>
+    {% if user.notifications.count > 0 %}
+      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notifications_dropdown_link"
+           id="notifications_dropdown">
+        {% for notification in user.notifications.all %}
+
+          {% if forloop.counter0 != 0 %}
+            <div class="dropdown-divider" id="notification_divider_{{ notification.id }}"></div>
+          {% endif %}
+
+          <div class="px-3" id="notification_{{ notification.id }}">
+
+            {# The notification content and buttons to mark as read or delete #}
+            <div class="row" style="min-width: 25rem !important;">
+
+              {# Notification message #}
+              <div class="col-10 pr-0">
+                <p class="small {% if notification.is_read %}text-muted{% endif %} text-justify"
+                   id="notification_{{ notification.id }}_message">
+                  {{ notification.message }}
+                </p>
+              </div>
+
+              {# Buttons to mark the notification as read or to delete it #}
+              <div class="btn-group-vertical col-auto pr-0">
+                {% csrf_token %}
+                {% if not notification.is_read %}
+                  <a onclick="notification_mark_as_read({{ notification.id }})" class="btn btn-sm"
+                     id="notification_{{ notification.id }}_mark_as_read_btn">
+                    <i class="fa fa-eye-slash"></i>
+                  </a>
+                {% endif %}
+                <a onclick="notification_delete({{ notification.id }})" class="btn btn-sm"
+                   id="notification_{{ notification.id }}_delete_btn">
+                  <i class="fa fa-times"></i>
+                </a>
+              </div>
+            </div>
+
+            {# The notification timestamp and target link #}
+            <div class="clearfix">
+              <span class="small float-left"><i class="fa fa-clock pr-1"></i> {{ notification.timestamp | date }}</span>
+              {% if notification.target %}
+                <a class="small float-right" href="{{ notification.target }}"
+                   data-toggle="tooltip" data-placement="left"
+                   title="{% blocktrans with url=notification.target %}Go to {{ url }}{% endblocktrans %}">
+                  <i class="fa fa-link pr-1"></i>{% trans "Access item" %}
+                </a>
+              {% endif %}
+            </div>
+
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </li>
+{% endif %}
+<!-- End of notifications -->
+
+<!-- User account -->
+<li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" href="#" id="accounts_dropdown" data-toggle="dropdown"
+     aria-haspopup="true" aria-expanded="false">
+    {% if user.is_authenticated %}
+      {{ user.display_name }}
+    {% else %}
+      {% trans "Log in" %}
+    {% endif %}
+  </a>
+  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="accounts_dropdown">
+    {% if user.is_authenticated %}
+      <a class="dropdown-item"
+         href="{% url 'accounts:details' %}">{% trans "My details" %}</a>
+      <a class="dropdown-item" href="{% url 'logout' %}">{% trans "Log out" %}</a>
+    {% else %}
+      <a class="dropdown-item" href="{% url 'accounts:login' %}">{% trans "Log in" %}</a>
+      <a class="dropdown-item"
+         href="{% url 'accounts:register' %}">{% trans "Create a new account" %}</a>
+    {% endif %}
+  </div>
+</li>
+<!-- End of user account -->

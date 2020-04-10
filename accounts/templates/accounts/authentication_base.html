@@ -1,0 +1,43 @@
+{% extends 'accounts/base.html' %}
+{% load i18n %}
+
+{% block title %}
+  {% if user.is_authenticated %}
+    {% trans "Access denied" %}
+  {% else %}
+    {{ title }}
+  {% endif %}
+{% endblock %}
+
+{% block accounts_content %}
+  {# User is already authenticated, so do not show anything about authentication or registration #}
+  {% if user.is_authenticated %}
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title mb-1 mt-1">{% trans "Access denied" %}</h4>
+      </div>
+      <div class="card-body">
+        <div class="text-center">
+          <p>
+            {% blocktrans trimmed with name=user.display_name %}
+              You are already logged in as <strong>{{ name }}</strong>. Thus, you <strong>cannot</strong> perform this
+              operation.
+            {% endblocktrans %}
+          </p>
+          <p>{% trans "You will be redirected in a few seconds…" %}</p>
+          <script type="text/javascript">
+            setTimeout(function () {
+              window.location.href = "{% url 'accounts:details' %}";
+            }, 5000);
+          </script>
+        </div>
+        <hr>
+        <div class="row justify-content-center">
+          <a href="{% url 'accounts:details' %}" class="btn btn-outline-secondary m-1">{% trans "My details" %}</a>
+        </div>
+      </div>
+    </div>
+  {% else %}
+    {% block accounts_actionblock %}{% endblock %}
+  {% endif %}
+{% endblock %}

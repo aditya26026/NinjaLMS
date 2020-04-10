@@ -1,0 +1,447 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: django-koalalms-account\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-03-29 16:46+0200\n"
+"PO-Revision-Date: 2020-03-29 16:46+0200\n"
+"Last-Translator: Guillaume Bernard <associations@guillaume-bernard.fr>\n"
+"Language-Team: French\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 2.3\n"
+
+#: accounts/admin.py:44
+msgid "Delete accounts that are inactive since at least 30 days"
+msgstr "Supprimer les comptes qui sont inactifs depuis au moins 30 jours"
+
+#: accounts/admin.py:71
+msgid "Users"
+msgstr "Utilisateurs"
+
+#: accounts/apps.py:27
+msgid "Authentication and Authorization"
+msgstr "Authentification et autorisation"
+
+#: accounts/models.py:50
+msgid "Preferred language"
+msgstr "Langue préférée"
+
+#: accounts/models.py:52
+msgid ""
+"This parameter is used to let you define in which language you want us to "
+"talk with you. Because of translation status, it may happen that no "
+"translation is available for you language."
+msgstr ""
+"Ce paramètre permet de définir dans quelle langue vous souhaitez que nous "
+"parlions avec vous. En raison de l’état de la traduction, il peut arriver "
+"qu’aucune traduction ne soit disponible pour votre langue."
+
+#: accounts/models.py:55
+msgid "email address"
+msgstr "adresse électronique"
+
+#: accounts/models.py:58
+msgid "User"
+msgstr "Utilisateur"
+
+#: accounts/models.py:87
+msgid "Recipient"
+msgstr "Destinataire"
+
+#: accounts/models.py:94
+msgid "Date and time"
+msgstr "Date et heure"
+
+#: accounts/models.py:97
+msgid "Message"
+msgstr "Message"
+
+#: accounts/models.py:101
+msgid "Target"
+msgstr "Cible"
+
+#: accounts/models.py:107
+msgctxt "State of a notification"
+msgid "Is read"
+msgstr "Est lue"
+
+#: accounts/models.py:118
+msgctxt "Notification verbose name (singular form)"
+msgid "notification"
+msgstr "notification"
+
+#: accounts/models.py:119
+msgctxt "Notification verbose name (plural form)"
+msgid "notifications"
+msgstr "notifications"
+
+#: accounts/models.py:126
+msgid "Parent group"
+msgstr "Groupe parent"
+
+#: accounts/models.py:170
+#, python-format
+msgid "“%(group)s” cannot be its own parent group."
+msgstr "« %(group)s » ne peut pas être son propre groupe parent."
+
+#: accounts/models.py:175
+#, python-format
+msgid ""
+"“%(parent_group)s” cannot be set as the parent group because it appears in "
+"the “%(group)s” subgroups."
+msgstr ""
+"« %(parent_group)s » ne peut pas être défini comme le groupe parent parce "
+"qu’il apparaît dans les sous-groupes de « %(group)s »."
+
+#: accounts/models.py:183
+#, python-format
+msgid ""
+"If “%(parent_group)s” becomes the parent of “%(group)s”, “%(group)s” will "
+"have itself as an ancestor because “%(group)s” is already the ancestor of "
+"“%(parent_group)s”. It is forbidden in order to prevent cycles in the "
+"hierarchy."
+msgstr ""
+"Si « %(parent_group)s » devient le parent de « %(group)s », %(group)s » sera "
+"l’ancêtre de lui-même parce que « %(group)s » est déjà l’ancêtre de "
+"« %(parent_group)s ». C’est interdit pour prévenir les cycles dans la "
+"hiérarchie."
+
+#: accounts/models.py:197
+#, python-format
+msgid "%(group)s (children of “%(parent)s“, parent of [%(children)s])"
+msgstr "%(group)s (enfant de « %(parent)s », parent de [%(children)s])"
+
+#: accounts/models.py:200
+#, python-format
+msgid "%(group)s (children of “%(parent)s“)"
+msgstr "%(group)s (enfant de « %(parent)s »)"
+
+#: accounts/models.py:202
+#, python-format
+msgid "%(group)s (parent of [%(children)s])"
+msgstr "%(group)s (parent de [%(children)s])"
+
+#: accounts/models.py:203
+#, python-format
+msgid "%(group)s"
+msgstr "%(group)s"
+
+#: accounts/models.py:206
+msgctxt "Group of people (singular form)"
+msgid "group of people"
+msgstr "groupe de personnes"
+
+#: accounts/models.py:207
+msgctxt "Group of people (plural form)"
+msgid "groups of people"
+msgstr "groupes de personnes"
+
+#: accounts/templates/accounts/authentication_base.html:6
+#: accounts/templates/accounts/authentication_base.html:17
+msgid "Access denied"
+msgstr "Accès non autorisé"
+
+#: accounts/templates/accounts/authentication_base.html:22
+#, python-format
+msgid ""
+"You are already logged in as <strong>%(name)s</strong>. Thus, you "
+"<strong>cannot</strong> perform this operation."
+msgstr ""
+"Vous êtes déjà connecté en tant que <strong>%(name)s</strong>. Par "
+"conséquent, vous <strong>ne pouvez pas</strong> effectuer cette opération."
+
+#: accounts/templates/accounts/authentication_base.html:27
+msgid "You will be redirected in a few seconds…"
+msgstr "Vous allez être redirigé dans quelques secondes…"
+
+#: accounts/templates/accounts/authentication_base.html:36
+#: accounts/templates/accounts/dropdown.html:87
+#: accounts/templates/registration/password_change_form.html:17
+msgid "My details"
+msgstr "Mes informations"
+
+#: accounts/templates/accounts/details.html:7
+msgid "Personal information"
+msgstr "Informations personnelles"
+
+#: accounts/templates/accounts/details.html:23
+msgid "Update personnal information"
+msgstr "Mettre à jour mes informations personnelles"
+
+#: accounts/templates/accounts/details.html:32
+#: accounts/templates/registration/password_change_form.html:7
+#: accounts/templates/registration/password_change_form.html:19
+#: accounts/templates/registration/password_reset_confirm.html:9
+msgid "Change password"
+msgstr "Modifier le mot de passe"
+
+#: accounts/templates/accounts/details.html:34
+msgid "Password"
+msgstr "Mot de passe"
+
+#: accounts/templates/accounts/details.html:40
+msgid "Groups"
+msgstr "Groupes"
+
+#: accounts/templates/accounts/details.html:44
+#, python-format
+msgid ""
+"\n"
+"          You are registered in the group: <i>%(groups)s</i>.\n"
+"        "
+msgid_plural ""
+"\n"
+"          You are registered in the groups: <i>%(groups)s</i>.\n"
+"        "
+msgstr[0] ""
+"\n"
+"          Vous êtes inscrit dans le groupe : <i>%(groups)s</i>.\n"
+"        "
+msgstr[1] ""
+"\n"
+"          Vous êtes inscrit dans les groupes : <i>%(groups)s</i>.\n"
+"        "
+
+#: accounts/templates/accounts/details.html:50
+msgid "You are not registered in any group yet."
+msgstr "Vous n’êtes inscrit dans aucun groupe pour le moment."
+
+#: accounts/templates/accounts/dropdown.html:60
+#, python-format
+msgid "Go to %(url)s"
+msgstr "Aller à %(url)s"
+
+#: accounts/templates/accounts/dropdown.html:61
+msgid "Access item"
+msgstr "Accéder à l’élément"
+
+#: accounts/templates/accounts/dropdown.html:81
+#: accounts/templates/accounts/dropdown.html:90
+#: accounts/templates/registration/login.html:20
+#: accounts/templates/registration/password_reset_complete.html:7
+msgid "Log in"
+msgstr "Me connecter"
+
+#: accounts/templates/accounts/dropdown.html:88
+msgid "Log out"
+msgstr "Me déconnecter"
+
+#: accounts/templates/accounts/dropdown.html:92
+#: accounts/templates/accounts/register.html:8
+#: accounts/templates/registration/login.html:10 accounts/views.py:146
+msgid "Create a new account"
+msgstr "Créer un nouveau compte"
+
+#: accounts/templates/accounts/register.html:7
+#: accounts/templates/registration/login.html:4
+#: accounts/templates/registration/login.html:11
+msgid "Sign in"
+msgstr "Me connecter"
+
+#: accounts/templates/accounts/register.html:14
+msgid "About you…"
+msgstr "À propos de vous…"
+
+#: accounts/templates/accounts/register.html:24
+msgid "Your credential information…"
+msgstr "Vos informations de connexion…"
+
+#: accounts/templates/accounts/register.html:37
+msgid "Create the new account"
+msgstr "Créer un nouveau compte"
+
+#: accounts/templates/base.html:8
+msgid "Koala"
+msgstr "Koala"
+
+#: accounts/templates/base.html:30
+msgid "Accounts"
+msgstr "Compte"
+
+#: accounts/templates/registration/login.html:18
+msgid "Forgot your password?"
+msgstr "Mot de passe oublié ?"
+
+#: accounts/templates/registration/password_reset_complete.html:5
+msgid "Your password has been set. You may go ahead and log in now."
+msgstr ""
+"Votre mot de passe a été défini. Vous pouvez maintenant vous authentifier."
+
+#: accounts/templates/registration/password_reset_done.html:5
+msgid ""
+"We've emailed you instructions for setting your password, if an account "
+"exists with the email you entered. You should receive them shortly."
+msgstr ""
+"Nous vous avons envoyé par courriel les instructions pour changer de mot de "
+"passe, pour autant qu'un compte existe avec l'adresse que vous avez "
+"indiquée. Vous devriez recevoir rapidement ce message."
+
+#: accounts/templates/registration/password_reset_done.html:6
+msgid ""
+"If you don't receive an email, please make sure you've entered the address "
+"you registered with, and check your spam folder."
+msgstr ""
+"Si vous ne recevez pas de message, vérifiez que vous avez saisi l'adresse "
+"avec laquelle vous vous êtes enregistré et contrôlez votre dossier de "
+"pourriels."
+
+#: accounts/templates/registration/password_reset_done.html:8
+msgid "Go back home"
+msgstr "Retourner à l’accueil"
+
+#: accounts/templates/registration/password_reset_form.html:8
+msgid "Reset my password"
+msgstr "Réinitialiser mon mot de passe"
+
+#: accounts/views.py:72
+msgid "Activate your Koala LMS account"
+msgstr "Activez votre compte Koala LMS"
+
+#: accounts/views.py:89 accounts/views.py:253
+msgid ""
+"Something went wrong when trying to find your account in the database. "
+"Aborting."
+msgstr ""
+"Quelque chose s’est mal passé lorsque nous vous avons cherché dans la base "
+"de données. Abandon."
+
+#: accounts/views.py:95
+#, python-format
+msgid "%(user)s, we send you a new confirmation email to %(email)s."
+msgstr ""
+"%(user)s, nous vous avons envoyé un nouveau courriel de confirmation à "
+"%(email)s."
+
+#: accounts/views.py:100 accounts/views.py:161
+msgid ""
+"The component used to send the confirmation mails is broken. Please contact "
+"your system administrator to let him fix this issue."
+msgstr ""
+"Le composant utilisé pour envoyer des messages de confirmation est cassé. "
+"Contactez votre administrateur système pour le laisser corriger cette "
+"anomalie."
+
+#: accounts/views.py:116
+#, python-format
+msgid ""
+"%(name)s, is seems your account has not been activated yet. If you did not "
+"received any confirmation email, click <a href=\"%(resend_link)s\">here</a>. "
+"Another one will be resend to you."
+msgstr ""
+"%(name)s, il semble que votre compte n’a pas encore été activé. Si vous "
+"n’avez pas reçu le courriel de confirmation, cliquez <a href="
+"\"%(resend_link)s\">ici</a>. Un autre vous sera renvoyé."
+
+#: accounts/views.py:129
+msgid "My account − Change password"
+msgstr "Mon compte − Modifier le mot de passe"
+
+#: accounts/views.py:132
+msgid "Password updated!"
+msgstr "Mot de passe mis à jour !"
+
+#: accounts/views.py:136
+msgid "Error when updating password. You should fix the issues and try again."
+msgstr ""
+"Erreur lors de la mise à jour du mot de passe. Vous devriez corriger les "
+"erreurs et essayer à nouveau."
+
+#: accounts/views.py:155
+#, python-format
+msgid ""
+"%(user)s (%(username)s), your registration is complete now. In order to "
+"access your account, you have to activate it first. We just sent you an "
+"email to confirm your registration."
+msgstr ""
+"%(user)s  (%(username)s), votre inscription est terminée. Afin d’accéder à "
+"votre compte, vous devez d’abord l’activer. Nous venons de vous envoyer un "
+"message pour confirmer votre inscription."
+
+#: accounts/views.py:183
+msgid "Your personal details have been updated!"
+msgstr "Vos informations personnelles ont été mises à jour !"
+
+#: accounts/views.py:188
+msgid "Error when changing personal details. Check errors and retry."
+msgstr ""
+"Erreur lors de la mise à jour de vos informations personnelles. Vérifiez les "
+"erreurs et reessayez."
+
+#: accounts/views.py:193
+#, python-format
+msgid "My account − %(username)s"
+msgstr "Mon compte − %(username)s"
+
+#: accounts/views.py:262
+#, python-format
+msgid ""
+"%(user)s (%(username)s), your account has been confirmed. You can now log in "
+"using the password you previously chose."
+msgstr ""
+"%(user)s (%(username)s), votre compte est confirmé. Vous pouvez désormais "
+"vous connecter en utilisant le mot de passe que vous avez choisi "
+"précédemment."
+
+#: accounts/views.py:268
+msgid ""
+"The activation link you provided is broken, or does not correspond to "
+"something expected. Please check your email in order to find your activation "
+"link."
+msgstr ""
+"Le lien d’activation que vous avez fourni est brisé ou ne correspond pas à "
+"ce qui était attendu. Vérifiez vos messages afin de trouver votre lien "
+"d’activation."
+
+#~ msgid "Login unsuccessful. Please verify your username and password."
+#~ msgstr ""
+#~ "Erreur de connexion. Veuillez vérifier votre nom d’utilisateur et votre "
+#~ "mot de passe."
+
+#~ msgid ""
+#~ "Your registration went correctly. You’re now connected and you can update "
+#~ "your personal information from this page."
+#~ msgstr ""
+#~ "Votre enregistrement s’est bien passé. Vous êtes désormais connecté et "
+#~ "vous pouvez mettre à jour vos informations personnelles depuis cette page."
+
+#~ msgid "subgroups"
+#~ msgstr "sous-groupes"
+
+#~ msgid "User account management"
+#~ msgstr "Gestion des comptes d’utilisateurs"
+
+#~ msgid "Choose a username:"
+#~ msgstr "Choisissez un nom d’utilisateur :"
+
+#~ msgid "May contain only letters, numbers, underscores or hyphens"
+#~ msgstr ""
+#~ "Ne peut contenir que des lettres, des nombres, soulignements ou tirets"
+
+#~ msgid "Email:"
+#~ msgstr "Courriel :"
+
+#~ msgid "Your first name:"
+#~ msgstr "Votre prénom :"
+
+#~ msgid "Your last name:"
+#~ msgstr "Votre nom :"
+
+#~ msgid "Password:"
+#~ msgstr "Mot de passe :"
+
+#~ msgid "At least 7 characters"
+#~ msgstr "Au moins 7 caractères"
+
+#~ msgid "Confirm password:"
+#~ msgstr "Confirmer le mot de passe :"
+
+#~ msgid "Account management"
+#~ msgstr "Gestion de compte"

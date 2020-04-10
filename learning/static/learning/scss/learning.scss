@@ -1,0 +1,155 @@
+/**
+ * Copyright (C) 2019-2020 Guillaume Bernard <guillaume.bernard@koala-lms.org>
+ *
+ * This file is part of Koala LMS (Learning Management system)
+
+ * Koala LMS is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ */
+
+@import "objects/course.scss";
+@import "objects/activity.scss";
+@import "objects/resource.scss";
+
+@import "colors.scss";
+
+@import "sidebar.scss";
+@import "agora.scss";
+
+.breadcrumb_item {
+  color: $koala_light_black;
+}
+
+div.model_description {
+  border-radius: 0.25rem;
+  background-color: $koala_grey;
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+  }
+
+  h4 {
+    font-size: 1.25rem;
+  }
+
+  p {
+    font-size: 1rem;
+  }
+}
+
+div.card {
+  div.card-footer {
+    font-size: .9rem;
+
+    p {
+      margin-bottom: 0;
+    }
+  }
+}
+
+div.form-group > small.text-muted > ul {
+  padding-left: 2rem;
+}
+
+.tab-pane {
+  min-height: 18rem;
+  max-height: 18rem;
+  height: 18rem;
+  margin-bottom: 1rem;
+
+  > {
+    div.markdownx-preview {
+      height: 100% !important;
+      width: 100%;
+      overflow: scroll;
+      resize: none;
+    }
+
+    textarea {
+      height: 100% !important;
+      width: 100%;
+      overflow: scroll;
+      resize: none;
+      font-family: "Ubuntu Mono derivative Powerline", monospace;
+    }
+  }
+}
+
+.object_form_tab {
+  border-radius: .5rem;
+  margin-bottom: .5rem;
+  background-color: $koala_grey;
+  padding: 1rem;
+}
+
+#mandatory {
+  color: $koala_red;
+  float: right;
+  margin: 1rem 1rem 0 0;
+}
+
+.btn_tab {
+  background-color: $koala_white;
+  border-color: $koala_black;
+  padding: 7px 25px;
+  border-radius: 5px;
+  color: $koala_black;
+  margin: 0 3rem 0 3rem;
+  transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+
+  &:hover {
+    background-color: $koala_black;
+    color: $koala_white;
+  }
+}
+
+.dot {
+  height: .5rem;
+  width: .5rem;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: .5rem;
+}
+
+.course_dot {
+  @extend .dot;
+  background-color: $color_course;
+}
+
+.resource_dot {
+  @extend .dot;
+  background-color: $color_resource;
+}
+
+.activity_dot {
+  @extend .dot;
+  background-color: $color_activity;
+}
+
+.object_bookmark_title {
+  max-width: 20rem;
+
+  img {
+    height: 5rem;
+    margin: 0 0 1rem 1rem;
+  }
+}

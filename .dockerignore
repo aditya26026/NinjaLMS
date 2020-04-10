@@ -1,0 +1,6 @@
+./accounts
+./learning
+./*.sqlite3
+./*.md
+./.*
+./lms/local_settings.py

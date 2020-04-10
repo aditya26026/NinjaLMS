@@ -1,0 +1,57 @@
+{% extends "learning/course/details/agora/agora.html" %}
+{% load i18n django_bootstrap_breadcrumbs %}
+
+{% block title %}{{ block.super }} − {% trans "Answer a Question" %}{% endblock %}
+
+{% block breadcrumbs %}
+  {{ block.super }}
+  {% breadcrumb question.title "learning:course/detail/question" course.slug question.slug %}
+{% endblock %}
+
+{% block agora %}
+  <div class="question">
+    <h2>{{ question.title }}</h2>
+    <hr>
+    <p>{{ question.body }}</p>
+    <p class="text_info_question_answer">Posted by : {{ question.author }}, on {{ question.created }}</p>
+
+  </div>
+
+  <h2>{{ question.responses.count }} Answers : </h2>
+  <hr>
+  {% for response in question.responses.all %}
+    <div class="row">
+      <p class="text_info_question_answer">
+        {% blocktrans trimmed with author=response.author created=response.created score=response.score %}
+          Published by : {{ author }} on {{ created }}.
+        {% endblocktrans %}
+        <span class="btn-score">{% blocktrans with score=response.score %}Score {{ score }}{% endblocktrans %}</span>
+      </p>
+      <div class="col-md-1">
+        <form method="post" action="{% url "learning:course/detail/question/answer/vote" slug=course.slug question_slug=question.slug %}">
+          {% csrf_token %}
+          <input type="hidden" name="response" value="{{ response.id }}">
+          {% if request.user in response.voters.all %}
+            <button type="submit" class="btn btn-sm btn btn-success agora_btn"><i class="far fa-thumbs-up"></i>
+            </button>
+          {% else %}
+            <button type="submit" class="btn btn-sm btn-light agora_btn"><i class="far fa-thumbs-up"></i></button>
+          {% endif %}
+        </form>
+      </div>
+      <div class="col-md-11">
+        <p>{{ response.body }}</p>
+      </div>
+    </div>
+    <hr>
+  {% endfor %}
+
+  <div class="agora_form_body">
+    <form method="post">
+      {% csrf_token %}
+      {{ form }}
+      <button id="btn-submit" type="submit" class="btn btn-primary float-right agora_btn">{% trans "Reply" %}</button>
+    </form>
+  </div>
+
+{% endblock %}

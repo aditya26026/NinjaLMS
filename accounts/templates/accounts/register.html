@@ -1,0 +1,41 @@
+{% extends 'accounts/authentication_base.html' %}
+{% load i18n %}
+
+{% block accounts_actionblock %}
+  <div class="card">
+    <div class="card-header">
+      <a href="{% url 'accounts:login' %}" class="float-right btn btn-outline-primary">{% trans "Sign in" %}</a>
+      <h4 class="card-title mb-1 mt-1">{% trans "Create a new account" %}</h4>
+    </div>
+    <div class="card-body">
+      <form method="post">
+        {% csrf_token %}
+
+        <h5>{% trans "About you…" %}</h5>
+        <div class="form-row">
+          <div class="col-md-6">
+            {% include "accounts/_includes/basic_block.html" with field=form.first_name %}
+          </div>
+          <div class="col-md-6">
+            {% include "accounts/_includes/basic_block.html" with field=form.last_name %}
+          </div>
+        </div>
+
+        <h5>{% trans "Your credential information…" %}</h5>
+        {% include "accounts/_includes/basic_block.html" with field=form.username icon="fa-user" %}
+        {% include "accounts/_includes/basic_block.html" with field=form.email icon="fa-at" %}
+
+        <div class="form-row">
+          <div class="col-md-6">
+            {% include "accounts/_includes/password_block.html" with password=form.password1 %}
+          </div>
+          <div class="col-md-6">
+            {% include "accounts/_includes/password_block.html" with password=form.password2 %}
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary float-right">{% trans "Create the new account" %}</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'accounts/base.html' %}
+{% load i18n %}
+
+{% block accounts_content %}
+  <div class="card">
+    <div class="card-header">
+      <h4 class="card-title mb-1 mt-1">{% trans "Personal information" %}</h4>
+    </div>
+    <div class="card-body">
+      <form method="post">
+        {% csrf_token %}
+        <div class="form-row">
+          <div class="col-md-6">
+            {% include "accounts/_includes/basic_block.html" with field=form.first_name %}
+          </div>
+          <div class="col-md-6">
+            {% include "accounts/_includes/basic_block.html" with field=form.last_name %}
+          </div>
+        </div>
+        {% include "accounts/_includes/basic_block.html" with field=form.email icon="fa-at" %}
+        {% include "accounts/_includes/basic_block.html" with field=form.preferred_language icon="fa-flag" %}
+        <button type="submit" class="btn btn-primary float-right">
+          {% trans "Update personnal information" %}
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="card mt-3">
+    <div class="card-header">
+      <a href="{% url 'accounts:password_change' %}" class="float-right btn btn-outline-primary">
+        {% trans "Change password" %}
+      </a>
+      <h4 class="card-title mb-1 mt-1">{% trans "Password" %}</h4>
+    </div>
+  </div>
+
+  <div class="card mt-3">
+    <div class="card-header">
+      <h4 class="card-title mb-1 mt-1">{% trans "Groups" %}</h4>
+    </div>
+    <div class="card-body">
+      {% if user.groups.count > 0 %}
+        {% blocktrans with groups=user.groups.all|join:', ' count nb=user.groups.count %}
+          You are registered in the group: <i>{{ groups }}</i>.
+        {% plural %}
+          You are registered in the groups: <i>{{ groups }}</i>.
+        {% endblocktrans %}
+      {% else %}
+        {% trans "You are not registered in any group yet." %}
+      {% endif %}
+    </div>
+  </div>
+
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "learning/course/detail.html" %}
+{% load i18n django_bootstrap_breadcrumbs %}
+
+{% block title %}{{ block.super }} − {% trans "Agora" %}{% endblock %}
+
+{% block breadcrumbs %}
+  {{ block.super }}
+  {% breadcrumb "Agora" "learning:course/detail/agora" course.slug %}
+{% endblock %}
+
+{% block learning_content %}
+
+  <div class="alert alert-warning" role="alert">
+    {% blocktrans trimmed %}
+      Agora in Koala LMS is still a preview. If you encounter any issue, please report it. You can contact the
+      project developers to do so and
+      <a href=\"https://gitlab.com/koala-lms/lms/issues/new\">open an issue on our project page</a>.
+    {% endblocktrans %}
+  </div>
+
+  <hr>
+
+  {% block agora %}
+    {% with url_name="learning:course/detail/question/add" %}
+      <div class="clearfix">
+        <a href="{% url url_name course.slug %}">
+          <button id="btn-new-question" type="button" class="btn btn-primary float-right" data-toggle="modal">
+            <i class="fas fa-comment-medical"></i> {% trans "Ask Question" %}
+          </button>
+        </a>
+      </div>
+    {% endwith %}
+    <hr>
+    {% if object.questions.all %}
+      <div class="container">
+        {% for registration in object.questions.all %}
+          {% with url_name="learning:course/detail/question" %}
+            <div class="row">
+              <div class="container-fluid">
+                <div class="row">
+                  <a id="link-towards-question" class=" col-md-8" href="{% url url_name course.slug registration.slug %}">
+                    <p class="h3">{{ registration.title }}</p>
+                  </a>
+                  <p class="text_date_question_answer">
+                    {% blocktrans trimmed with author=registration.author created=registration.created %}
+                      Published by : {{ author }} on {{ created }}
+                    {% endblocktrans %}
+                  </p>
+                </div>
+                <p>{{ registration.body|truncatechars:150 }}</p>
+              </div>
+            </div>
+            <hr>
+          {% endwith %}
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="alert alert-info" role="alert">
+        {% trans "No question posted on this course." %}
+        {% if "view_course" in course_perms %}
+          {% trans "You should consider adding one." context "add a question" %}
+        {% endif %}
+      </div>
+    {% endif %}
+  {% endblock %}
+
+{% endblock %}

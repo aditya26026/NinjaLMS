@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load i18n static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block extrastyle %}{{ block.super }}
+  <link rel="stylesheet" href="{% static 'accounts/style.css' %}"/>
+  <script defer src="{% static 'accounts/js/notification.js' %}"></script>
+  <script defer src="{% static 'accounts/fonts/fontawesome.js' %}"></script>
+{% endblock %}
+
+{% block extrahead %}
+  <link rel="shortcut icon" href="{% static 'accounts/images/favicon.png' %}" type="image/x-icon">
+{% endblock %}
+
+{% block content %}
+  {% include "accounts/_includes/messages.html" %}
+  {% block accounts_content %}{% endblock %}
+{% endblock %}

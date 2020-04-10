@@ -1,0 +1,54 @@
+{% load i18n learning %}
+
+{# object: instance of BasicObjectMixin #}
+{# object_collaborator : instance of ObjectCollaboratorMixin#}
+{# page_obj: paginator object with instances of ObjectCollaboratorMixin #}
+
+{% if page_obj.object_list %}
+  <table id="collaborators-table" class="table table-hover mt-3">
+    <thead class="thead-light">
+    <tr>
+      <th class="d-none d-md-table-cell">#</th>
+      <th>{% trans "Name" %}</th>
+      <th>{% trans "Role" %}</th>
+      <th class="d-none d-lg-table-cell">{% trans "Permissions" %}</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for object_collaborator in page_obj %}
+      <tr>
+        <td class="d-none d-md-table-cell">{{ forloop.counter }}</td>
+        <td class="font-weight-bold">{{ object_collaborator.collaborator }}</td>
+        <td>{{ object_collaborator.get_role_display }}</td>
+        <td class="d-none d-lg-table-cell">
+          {% get_object_perms object object_collaborator.collaborator as collaborator_object_perms %}
+          {% for permission in collaborator_object_perms %}
+            {% get_permission_icon permission object as icon %}
+            {{ icon }}
+          {% endfor %}
+        </td>
+        <td class="text-center">
+          {% if "change_collaborator_"|add:object_name in object_perms %}
+            {% with "learning:"|add:object_name|add:"/detail/collaborator/change" as target_url %}
+              {% include "learning/_includes/collaborators/change_collaborator_on_object.html" with object=object object_collaborator=object_collaborator target_url=target_url %}
+            {% endwith %}
+          {% endif %}
+          {% if "delete_collaborator_"|add:object_name in object_perms %}
+            {% with "learning:"|add:object_name|add:"/detail/collaborator/delete" as target_url %}
+              {% include "learning/_includes/collaborators/delete_collaborator_on_object.html" with object=object object_collaborator=object_collaborator target_url=target_url %}
+            {% endwith %}
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+  {% include "learning/_includes/paginator_buttons.html" with current_page=page_obj %}
+{% else %}
+  <div class="alert alert-info" role="alert">
+    {% trans "You do not have any collaborator on this object." %}
+    {% if "add_collaborator_"|add:object_name in object_perms %}
+      {% trans "You should consider adding one." context "add a collaborator" %}
+    {% endif %}
+  </div>
+{% endif %}

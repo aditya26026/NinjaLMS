@@ -1,0 +1,8 @@
+django
+django-bootstrap-static
+django-taggit
+django_bootstrap_breadcrumbs
+django-countries
+django-markdownx
+django-fontawesome
+django-bootstrap

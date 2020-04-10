@@ -1,0 +1,38 @@
+{% load i18n learning countries %}
+
+<div class="col-lg-4 col-md-6 col-sm-6 col-12 p-2">
+  <div class="card w-100 h-100">
+    <div class="card-body">
+
+      {% block course_block_header %}
+        <h5 class="card-title mb-0">{{ course.name }}</h5>
+      {% endblock %}
+
+      <hr>
+      <div class="clearfix">
+        <div class="float-left">
+          {% include "learning/_includes/object_tags_line.html" with object=course %}
+        </div>
+        <div class="float-right">
+          {% get_country course.language as country %}
+          <i class="{{ country.flag_css }} align-middle"></i>
+        </div>
+      </div>
+
+      <div class="card-text">
+        {% block course_block_content %}{% endblock %}
+      </div>
+
+    </div>
+
+    <div class="card-footer bg-white">
+      {% block course_card_footer %}
+        <div class="clearfix">
+          {% include "learning/activity/_includes/nb_activities_badge.html" with course=course %}
+          {% include "learning/course/_includes/block/see_more_link.html" with course=course %}
+        </div>
+      {% endblock %}
+    </div>
+
+  </div>
+</div>

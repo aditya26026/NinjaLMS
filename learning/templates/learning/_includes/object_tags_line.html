@@ -1,0 +1,7 @@
+{% load i18n %}
+
+{% if object.tags.all %}
+  {% for tag in object.tags.all %}
+    <span class="badge badge-pill badge-primary"><small><i class="fas fa-tags"></i></small> {{ tag }}</span>
+  {% endfor %}
+{% endif %}
