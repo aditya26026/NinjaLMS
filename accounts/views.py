@@ -3,6 +3,12 @@
 #
 # This file is part of Koala LMS (Learning Management system)
 
+import urllib
+from django import template
+from accounts.tokens import account_activation_token
+from accounts.models import Person, Notification, Preferences
+from accounts.forms import UserLoginForm, UserCreationForm, UserChangeForm
+from django.views.generic import CreateView, UpdateView
 from django.contrib import messages
 # Koala LMS is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,18 +30,32 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView as AuthLoginView, PasswordChangeView
 from django.core.mail import EmailMessage
 from django.db.models import Q
-from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, redirect
+from django.http import HttpResponseRedirect, JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.translation import ugettext_lazy as _
-from django.views.generic import CreateView, UpdateView
+from django.core import serializers
 
-from accounts.forms import UserLoginForm, UserCreationForm, UserChangeForm
-from accounts.models import Person, Notification
-from accounts.tokens import account_activation_token
+pref_dict = {
+    'Development': ['Web Development', 'Data Science', 'Mobile Apps', 'Programming Languages', 'Game Development', 'Databases', 'Software Testing', 'Software Engineering', 'Development Tools', 'E Commerce'],
+    'Business': ['Finance Courses', 'Entrepreneurship', 'Communications', 'Management', 'Sales', 'Strategy', 'Operations', 'Project Management', 'Business Law', 'Data And Analytics', 'Home Business', 'Human Resources', 'Industry', 'Media', 'Real Estate', 'Other Business'],
+    'Finance And Accounting': ['Accounting Bookkeeping', 'Compliance', 'Cryptocurrency And Blockchain', 'Economics', 'Finance Management', 'Finance Certification And Exam Prep', 'Financial Modeling And Analysis', 'Investing And Trading', 'Money Management Tools', 'Taxes', 'Other Finance And Accounting'],
+    'It And Software': ['It Certification', 'Network And Security', 'Hardware', 'Operating Systems', 'Other It And Software'],
+    'Office Productivity': ['Microsoft', 'Apple', 'Google', 'Sap', 'Oracle', 'Other Productivity'],
+    'Personal Development': ['Personal Transformation', 'Productivity', 'Leadership', 'Personal Finance', 'Career Development', 'Parenting And Relationships', 'Happiness', 'Religion And Spirituality', 'Personal Brand Building', 'Creativity', 'Influence', 'Self Esteem', 'Stress Management', 'Memory', 'Motivation', 'Other Personal Development'],
+    'Design': ['Web Design', 'Graphic Design', 'Design Tools', 'User Experience', 'Game Design', 'Design Thinking', '3D And Animation', 'Fashion', 'Architectural Design', 'Interior Design', 'Other Design'],
+    'Marketing': ['Digital Marketing', 'Search Engine Optimization', 'Social Media Marketing', 'Branding', 'Marketing Fundamentals', 'Analytics And Automation', 'Public Relations', 'Advertising', 'Video And Mobile Marketing', 'Content Marketing', 'Growth Hacking', 'Affiliate Marketing', 'Product Marketing', 'Other Marketing'],
+    'Lifestyle': ['Arts And Crafts', 'Food And Beverage', 'Beauty And Makeup', 'Travel', 'Gaming', 'Home Improvement', 'Pet Care And Training', 'Other Lifestyle'],
+    'Photography': ['Digital Photography', 'Photography Fundamentals', 'Portraits', 'Photography Tools', 'Commercial Photography', 'Video Design', 'Other Photography'],
+    'Health And Fitness': ['Fitness', 'General Health', 'Sports', 'Nutrition', 'Yoga', 'Mental Health', 'Dieting', 'Self Defense', 'Safety And First Aid', 'Dance', 'Meditation', 'Other Health And Fitness'],
+    'Music': ['Instruments', 'Production', 'Music Fundamentals', 'Vocal', 'Music Techniques', 'Music Software', 'Other Music'],
+    'Teaching And Academics': ['Engineering', 'Humanities', 'Math', 'Science', 'Online Education', 'Social Science', 'Language', 'Teacher Training', 'Test Prep', 'Other Teaching Academics']
+}
+
+pref_values = tuple(pref_dict.keys())
 
 
 def _update_valid_or_invalid_form_fields(form):
@@ -46,10 +66,20 @@ def _update_valid_or_invalid_form_fields(form):
             current_class = str()
 
         if field in form.errors:
-            form.fields[field].widget.attrs.update({'class': current_class + ' ' + 'is-invalid'})
+            form.fields[field].widget.attrs.update(
+                {'class': current_class + ' ' + 'is-invalid'})
         elif field in form.changed_data:
-            form.fields[field].widget.attrs.update({'class': current_class + ' ' + 'is-valid'})
+            form.fields[field].widget.attrs.update(
+                {'class': current_class + ' ' + 'is-valid'})
     return form
+
+
+def loginSuccess(request):
+    if request.method == 'GET':
+        current_user = request.user
+        if current_user.is_first_login:
+            return redirect("accounts:preferences")
+    return redirect("home")
 
 
 def send_activation_mail(user: get_user_model(), domain: str) -> bool:
@@ -82,7 +112,8 @@ def resend_activation_mail(request, uidb64_username: str):
     :type uidb64_username: str
     """
     try:
-        decoded_user = get_object_or_404(get_user_model(), username=force_text(urlsafe_base64_decode(uidb64_username)))
+        decoded_user = get_object_or_404(get_user_model(), username=force_text(
+            urlsafe_base64_decode(uidb64_username)))
     except(TypeError, ValueError, OverflowError, get_user_model().DoesNotExist):
         messages.error(
             request,
@@ -133,7 +164,8 @@ class PasswordChange(PasswordChangeView):
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        messages.error(self.request, _("Error when updating password. You should fix the issues and try again."))
+        messages.error(self.request, _(
+            "Error when updating password. You should fix the issues and try again."))
         form = _update_valid_or_invalid_form_fields(form)
         return super().form_invalid(form)
 
@@ -180,17 +212,20 @@ class AccountsDetailsView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         form.save()
         if form.has_changed():
-            messages.success(self.request, _("Your personal details have been updated!"))
+            messages.success(self.request, _(
+                "Your personal details have been updated!"))
         return super().form_valid(form)
 
     def form_invalid(self, form):
         form = _update_valid_or_invalid_form_fields(form)
-        messages.error(self.request, _("Error when changing personal details. Check errors and retry."))
+        messages.error(self.request, _(
+            "Error when changing personal details. Check errors and retry."))
         return super().form_invalid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = _("My account − %(username)s") % {'username': self.request.user.display_name}
+        context["title"] = _("My account − %(username)s") % {
+            'username': self.request.user.display_name}
         return context
 
 
@@ -224,7 +259,8 @@ def search_user(request):
 @login_required
 def notification_mark_as_read(request, notification_id):
     if request.method == 'POST':
-        notification = get_object_or_404(Notification, recipient=request.user, pk=notification_id)
+        notification = get_object_or_404(
+            Notification, recipient=request.user, pk=notification_id)
         notification.is_read = True
         notification.save()
     # noinspection PyUnresolvedReferences
@@ -232,9 +268,26 @@ def notification_mark_as_read(request, notification_id):
 
 
 @login_required
+def preferences(request):
+    if request.method == 'POST':
+        choice_list = request.POST["choices"].split(",")
+        inst_arr = []
+        for choice in choice_list:
+            p1 = Preferences(name=choice)
+            p1.save()
+            inst_arr.append(p1)
+        user = request.user
+        user.save()
+        user.preferences.add(*inst_arr)
+        return redirect("home")
+    return render(request, 'accounts/preferences.html', {'pref_list': pref_dict})
+
+
+@login_required
 def notification_delete(request, notification_id):
     if request.method == 'POST':
-        notification = get_object_or_404(Notification, recipient=request.user, pk=notification_id)
+        notification = get_object_or_404(
+            Notification, recipient=request.user, pk=notification_id)
         notification.delete()
     # noinspection PyUnresolvedReferences
     return JsonResponse({'unread': request.user.unread_notifications.count()})

@@ -141,7 +141,7 @@ SECRET_KEY = "yj6o@&vrar6^l1u68!bxumj@xr4&5)zzk!h1qw&63^&@2d3w@#"
 
 # Login URLs
 LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'accounts:login_success'
 LOGOUT_REDIRECT_URL = 'home'
 
 LOGGING_LEVEL = logging.INFO

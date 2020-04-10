@@ -28,7 +28,7 @@ from django.contrib.auth.models import Group
 from django.utils.translation import gettext as _
 
 from accounts.forms import UserCreationForm, UserAdminChangeForm
-from accounts.models import Person, Notification, GroupOfPeople
+from accounts.models import Person, Notification, GroupOfPeople, Preferences
 
 
 # noinspection PyUnusedLocal
@@ -41,7 +41,8 @@ def delete_inactive_account_since_30_days(modeladmin, request, queryset):
     queryset.filter(date_joined__lt=date_boundary, is_active=False).delete()
 
 
-delete_inactive_account_since_30_days.short_description = _("Delete accounts that are inactive since at least 30 days")
+delete_inactive_account_since_30_days.short_description = _(
+    "Delete accounts that are inactive since at least 30 days")
 
 
 class AccountsAdmin(UserAdmin):
@@ -94,3 +95,6 @@ admin.site.register(GroupOfPeople, GroupOfPeopleAdmin)
 
 # Register notifications
 admin.site.register(Notification)
+
+
+admin.site.register(Preferences)

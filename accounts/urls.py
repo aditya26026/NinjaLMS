@@ -28,19 +28,25 @@ app_name = 'accounts'
 
 ajax_api_urlpatterns = [
     path('search/', views.search_user, name='ajax/search'),
-    path('notification/read/<int:notification_id>', views.notification_mark_as_read, name="ajax/notification/read"),
-    path('notification/delete/<int:notification_id>', views.notification_delete, name="ajax/notification/delete"),
+    path('notification/read/<int:notification_id>',
+         views.notification_mark_as_read, name="ajax/notification/read"),
+    path('notification/delete/<int:notification_id>',
+         views.notification_delete, name="ajax/notification/delete"),
 ]
 
 urlpatterns = [
     path('', views.LoginView.as_view(), name='index'),
 
     path('login/', views.LoginView.as_view(), name='login'),
+    path('login_success/', views.loginSuccess, name='login_success'),
     path('details/', views.AccountsDetailsView.as_view(), name='details'),
 
     #  Password update and reset
     path('password_change/', views.PasswordChange.as_view(), name='password_change'),
-    path('password_reset/', PasswordResetView.as_view(form_class=UserPasswordResetForm), name="password_reset"),
+    path('password_reset/', PasswordResetView.as_view(
+        form_class=UserPasswordResetForm), name="password_reset"),
+
+    path('preferences/', views.preferences, name='preferences'),
 
     #  Account registration and activation
     path('register/', views.AccountsRegisterView.as_view(), name='register'),

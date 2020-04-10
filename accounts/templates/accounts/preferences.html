@@ -1,0 +1,141 @@
+{% extends 'accounts/base.html' %}
+
+{% load i18n static %}
+{% block accounts_content %}
+
+{% if user.is_authenticated %}
+<meta charset="UTF-8">
+<h1 style="text-align:center"> What you 💙 to Learn !</h1>
+  <hr>
+
+  <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+    {% for topic in pref_list.keys%}
+      <li class="nav-item">
+        <a class="nav-link " id="{{topic}}" onClick="set_pref_list(this.id)" data-toggle="pill">{{topic}}</a>
+      </li>
+    {% endfor %}
+    </ul> 
+    <div>
+    <hr>
+    <div class="form-group">
+      <multi-input>
+        <input name="TypeList" list="TypeList" id="input" class="form-control" placeholder="Select topics in Development">
+        <datalist id="TypeList">
+        </datalist>
+      </multi-input>
+    </div>
+  </div>
+
+  <p id="values"></p>
+
+<form action="{%url 'accounts:preferences' %}" method="POST">
+  {% csrf_token %}
+  <input id="choices" type="hidden" name="choices" value="">
+  <button type="submit">Save Preferences</button>
+</form>
+
+ <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+<script>
+    var pref_dict = {
+    'Development': ['Web Development', 'Data Science', 'Mobile Apps', 'Programming Languages', 'Game Development', 'Databases', 'Software Testing', 'Software Engineering', 'Development Tools', 'E Commerce'],
+    'Business': ['Finance Courses', 'Entrepreneurship', 'Communications', 'Management', 'Sales', 'Strategy', 'Operations', 'Project Management', 'Business Law', 'Data And Analytics', 'Home Business', 'Human Resources', 'Industry', 'Media', 'Real Estate', 'Other Business'],
+    'Finance And Accounting': ['Accounting Bookkeeping', 'Compliance', 'Cryptocurrency And Blockchain', 'Economics', 'Finance Management', 'Finance Certification And Exam Prep', 'Financial Modeling And Analysis', 'Investing And Trading', 'Money Management Tools', 'Taxes', 'Other Finance And Accounting'],
+    'It And Software': ['It Certification', 'Network And Security', 'Hardware', 'Operating Systems', 'Other It And Software'],
+    'Office Productivity': ['Microsoft', 'Apple', 'Google', 'Sap', 'Oracle', 'Other Productivity'],
+    'Personal Development': ['Personal Transformation', 'Productivity', 'Leadership', 'Personal Finance', 'Career Development', 'Parenting And Relationships', 'Happiness', 'Religion And Spirituality', 'Personal Brand Building', 'Creativity', 'Influence', 'Self Esteem', 'Stress Management', 'Memory', 'Motivation', 'Other Personal Development'],
+    'Design': ['Web Design', 'Graphic Design', 'Design Tools', 'User Experience', 'Game Design', 'Design Thinking', '3D And Animation', 'Fashion', 'Architectural Design', 'Interior Design', 'Other Design'],
+    'Marketing': ['Digital Marketing', 'Search Engine Optimization', 'Social Media Marketing', 'Branding', 'Marketing Fundamentals', 'Analytics And Automation', 'Public Relations', 'Advertising', 'Video And Mobile Marketing', 'Content Marketing', 'Growth Hacking', 'Affiliate Marketing', 'Product Marketing', 'Other Marketing'],
+    'Lifestyle': ['Arts And Crafts', 'Food And Beverage', 'Beauty And Makeup', 'Travel', 'Gaming', 'Home Improvement', 'Pet Care And Training', 'Other Lifestyle'],
+    'Photography': ['Digital Photography', 'Photography Fundamentals', 'Portraits', 'Photography Tools', 'Commercial Photography', 'Video Design', 'Other Photography'],
+    'Health And Fitness': ['Fitness', 'General Health', 'Sports', 'Nutrition', 'Yoga', 'Mental Health', 'Dieting', 'Self Defense', 'Safety And First Aid', 'Dance', 'Meditation', 'Other Health And Fitness'],
+    'Music': ['Instruments', 'Production', 'Music Fundamentals', 'Vocal', 'Music Techniques', 'Music Software', 'Other Music'],
+    'Teaching And Academics': ['Engineering', 'Humanities', 'Math', 'Science', 'Online Education', 'Social Science', 'Language', 'Teacher Training', 'Test Prep', 'Other Teaching Academics']
+    }
+
+    $(function(){
+      const multiInput = document.querySelector('multi-input');
+
+      $('#pills-tab li:first a').addClass('active');
+      set_pref_list('Development');
+      $('#input').change(function(){
+            var topic_values = multiInput.getValues();
+            console.log(topic_values.toString());
+            $('#choices')[0].value = topic_values.toString();
+        });
+    });
+
+    function set_pref_list(id){
+      $('#input')[0].placeholder = "Select topics in " + id;
+      $("#TypeList").empty();
+      for( var i = 0; i < pref_dict[id].length; i++ )
+        { 
+          $("#TypeList").append('<option value="'+ pref_dict[id][i] +'" />');
+        };
+        multiInput.datalist = $('datalist')[0];
+        multiInput.input = $('input')[0];
+        multiInput.allowedValues = [];
+        for (const option of multiInput.datalist.options) {
+            multiInput.allowedValues.push(option.value);
+        }
+    };
+
+    
+
+</script>
+
+<style>
+  body {
+    font-family: 'Google Sans', sans-serif;
+  }
+
+  multi-input {
+    margin: 0 20px 20px 0;
+  }
+
+  button {
+    background-color: #eee;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    height: 30px;
+    margin: 0 10px 20px 0;
+  }
+
+  #input{
+    box-shadow: none !important;
+  }
+
+  .active:hover{
+    color: #fff!important;
+  }
+
+  .nav-link:hover{
+    cursor: pointer;
+  }
+
+  body>div {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  }
+
+  label {
+    display: block;
+    margin: 0 20px 20px 0;
+  }
+
+  p {
+    text-align: center;
+  }
+</style>
+<script src="{% static 'accounts/js/pref.js' %}"></script>
+<script>
+  const getButton = document.getElementById('get');
+  const multiInput = document.querySelector('multi-input');
+  const values = document.querySelector('#values');
+
+  document.querySelector('input').focus();
+</script>
+{% endif %}
+{% endblock %}

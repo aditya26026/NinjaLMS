@@ -21,7 +21,7 @@
 import django.contrib.auth.forms as auth_forms
 from django.contrib.auth import authenticate
 from django.forms import Form
-
+from django import forms
 from .models import Person
 
 
@@ -41,7 +41,8 @@ class UserLoginForm(CustomClassesOnFormMixin, auth_forms.AuthenticationForm):
         password = self.cleaned_data.get('password')
 
         if username and password:
-            self.user_cache = authenticate(self.request, username=username, password=password)
+            self.user_cache = authenticate(
+                self.request, username=username, password=password)
             if self.user_cache is None:
                 try:
                     self.user_cache = Person.objects.get(username=username)
@@ -63,7 +64,8 @@ class UserPasswordResetForm(CustomClassesOnFormMixin, auth_forms.PasswordResetFo
 class UserCreationForm(CustomClassesOnFormMixin, auth_forms.UserCreationForm):
     class Meta:
         model = Person
-        fields = ('first_name', 'last_name', 'username', 'email', 'password1', 'password2')
+        fields = ('first_name', 'last_name', 'username',
+                  'email', 'password1', 'password2')
 
 
 class UserChangeForm(CustomClassesOnFormMixin, auth_forms.UserChangeForm):

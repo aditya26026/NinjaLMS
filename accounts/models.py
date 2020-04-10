@@ -43,6 +43,14 @@ def get_translated_languages():
     return languages
 
 
+class Preferences(models.Model):
+    name = models.CharField(max_length=40)
+    color = models.CharField(max_length=7, default='#007bff')
+
+    def __str__(self):
+        return self.name
+
+
 class Person(AbstractUser):
     preferred_language = models.CharField(
         max_length=20,
@@ -53,6 +61,9 @@ class Person(AbstractUser):
                     "of translation status, it may happen that no translation is available for you language.")
     )
     email = models.EmailField(_('email address'), blank=False)
+    firstLogin = models.BooleanField(default=True)
+    preferences = models.ManyToManyField(
+        Preferences, related_name='student_prefernces')
 
     class Meta:
         verbose_name = _('User')
@@ -63,7 +74,8 @@ class Person(AbstractUser):
         current_language = translation.get_language()
         try:
             translation.activate(self.preferred_language)
-            self.notifications.create(message=translation.gettext(message), target=target)
+            self.notifications.create(
+                message=translation.gettext(message), target=target)
         finally:
             translation.activate(current_language)
 
@@ -76,6 +88,10 @@ class Person(AbstractUser):
         if self.first_name and self.last_name:
             return "{} {}".format(self.first_name, self.last_name)
         return self.username
+
+    @property
+    def is_first_login(self):
+        return self.firstLogin
 
     def __str__(self):
         return self.display_name
@@ -115,8 +131,10 @@ class Notification(models.Model):
 
     class Meta:
         ordering = ['recipient', 'timestamp']
-        verbose_name = pgettext_lazy("Notification verbose name (singular form)", "notification")
-        verbose_name_plural = pgettext_lazy("Notification verbose name (plural form)", "notifications")
+        verbose_name = pgettext_lazy(
+            "Notification verbose name (singular form)", "notification")
+        verbose_name_plural = pgettext_lazy(
+            "Notification verbose name (plural form)", "notifications")
 
 
 class GroupOfPeople(AbstractGroup):
@@ -167,7 +185,8 @@ class GroupOfPeople(AbstractGroup):
     def clean(self):
         if self == self.parent_group:
             raise ValidationError(
-                {'parent_group': _("“%(group)s” cannot be its own parent group.") % {'group': self.name}}
+                {'parent_group': _("“%(group)s” cannot be its own parent group.") % {
+                    'group': self.name}}
             )
         if self.parent_group in self.subgroups.all():
             raise ValidationError(
@@ -192,10 +211,11 @@ class GroupOfPeople(AbstractGroup):
         if self.parent_group:
             parent = self.parent_group.name
         if self.subgroups.count() > 0:
-            children = ', '.join([group.name for group in self.subgroups.all()])
+            children = ', '.join(
+                [group.name for group in self.subgroups.all()])
         if parent and children:
             return _("%(group)s (children of “%(parent)s“, parent of [%(children)s])") % \
-                   {'group': self.name, 'parent': parent, 'children': children}
+                {'group': self.name, 'parent': parent, 'children': children}
         if parent and not children:
             return _("%(group)s (children of “%(parent)s“)") % {'group': self.name, 'parent': parent}
         if children and not parent:
@@ -203,6 +223,8 @@ class GroupOfPeople(AbstractGroup):
         return _("%(group)s") % {'group': self.name}
 
     class Meta:
-        verbose_name = pgettext_lazy("Group of people (singular form)", "group of people")
-        verbose_name_plural = pgettext_lazy("Group of people (plural form)", "groups of people")
+        verbose_name = pgettext_lazy(
+            "Group of people (singular form)", "group of people")
+        verbose_name_plural = pgettext_lazy(
+            "Group of people (plural form)", "groups of people")
         ordering = ('name',)
